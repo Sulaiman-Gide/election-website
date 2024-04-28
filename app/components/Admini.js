@@ -122,7 +122,7 @@ const Admin = ({ userData, email }) => {
           <RiHome3Line  size={20}  className='text-gray-600'/>
           <h1 className='text-gray-600 text-lg ml-3 font-semibold'>Home</h1>
         </Link>
-        <Link href="/activeElections" className='flex justify-start items-center w-full cursor-pointer p-3 rounded-md mt-4 border border-gray-200/90 hover:bg-gray-100'>
+        <Link href="/activeEletions" className='flex justify-start items-center w-full cursor-pointer p-3 rounded-md mt-4 border border-gray-200/90 hover:bg-gray-100'>
           <MdPoll size={20}  className='text-gray-600'/>
           <h1 className='text-gray-600 text-lg ml-3 font-semibold'>Active Polls</h1>
         </Link>
@@ -161,7 +161,7 @@ const Admin = ({ userData, email }) => {
           <RiHome3Line size={20} className='text-gray-600'/>
           <h1 className='text-gray-600 text-lg ml-3 font-semibold'>Home</h1>
         </Link>
-        <Link href="/activeElections" className='flex justify-start items-center w-full cursor-pointer p-3 rounded-md mt-4 border border-gray-200/90 hover:bg-gray-100'>
+        <Link href="/activeEletions" className='flex justify-start items-center w-full cursor-pointer p-3 rounded-md mt-4 border border-gray-200/90 hover:bg-gray-100'>
           <MdPoll size={20} className='text-gray-600'/>
           <h1 className='text-gray-600 text-lg ml-3 font-semibold'>Active Polls</h1>
         </Link>
