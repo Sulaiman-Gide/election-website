@@ -8,26 +8,148 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+.sacramento-regular {
+  font-family:  "DM Serif Text", serif;;
+  font-weight: 800;
+}
+.mukta-extrabold {
+  font-family: "Mukta", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+.blueOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  background-image: linear-gradient(to right, rgba(1, 22, 34, 0.68), rgba(6, 19, 27, 0.4));
+}
+.homeTopImage {
+  height: 600px;
+}
+.darkOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  background-color: rgba(0, 0, 0, 0.38);
+}
+.homeTopText {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 80px 10px 10px;
+  z-index: 30;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  text-align: center;
+  cursor: pointer;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide {
+  width: 100%;
+}
+.swiper-slide:nth-child(2n) {
+  width: 100%;
+}
+.swiper-slide:nth-child(3n) {
+  width: 100%;
+}
+.swiper-slide:nth-child(4n) {
+  width: 100%;
+}
+.sellCarText {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 30px 10px 10px;
+  z-index: 30;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  text-align: center;
+  cursor: pointer;
+}
+.card-img {
+  transition: transform 0.3s ease-in-out;
+}
+.card:hover .card-img {
+  transform: scale(1.1);
+}
+@media screen and (max-width: 870px) {
+  .homeTopImage {
+    height: 530px;
+  }
+
+  .swiper-slide {
+    width: 100%;
+  }
+  .swiper-slide:nth-child(2n) {
+    width: 100%;
+  }
+  .swiper-slide:nth-child(3n) {
+    width: 100%;
+  }
+  .swiper-slide:nth-child(4n) {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 400px) {
+  .homeTopImage {
+    height: 360px;
+  }
+}
+@media screen and (max-width: 350px) {
+  .homeTopImage {
+    height: 350px;
+  }.sellCarText {
+    padding: 10px 10px 10px;
+  }
+  .smallscreen {
+    padding: 10px;
   }
 }
