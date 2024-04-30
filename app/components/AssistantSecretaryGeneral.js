@@ -90,12 +90,12 @@ function AssistantSecretaryGeneral() {
                                                         <h1 className='text-base sm:text-lg font-semibold text-gray-700 mt-1 truncate block'>{candidate.candidateLevel}</h1>
                                                     </div>
                                                     <div className='w-full flex justify-between items-center gap-2 mt-3 xl:px-4'>
-                                                        <button className='w-3/6 py-2 bg-[#0E5D8A] text-white font-semibold rounded-lg tracking-wide text-sm sm:text-base'>
+                                                        <button className='w-3/6 py-2 bg-[#0E5D8A] text-white font-semibold rounded-2xl tracking-wide text-sm sm:text-base'>
                                                             View Profile
                                                         </button>
-                                                        <a href={`https://wa.me/${phoneNumber}?text=Hi, I'm interested in voting for you. Could you please provide more information about your manifesto?`} target="_blank" className='text-center py-2 mx-auto w-3/6 bg-gray-100 font-semibold border hover:bg-gray-300/90 text-slate-700 hover:text-slate-800 rounded-lg tracking-wide text-sm sm:text-base'>
-                                                            Message
-                                                        </a>
+                                                        <Link href="/activeEletions" className='text-center py-2 mx-auto w-3/6 bg-gray-100 font-semibold border hover:bg-gray-300/90 text-slate-700 hover:text-slate-800 rounded-2xl tracking-wide text-sm sm:text-base'>
+                                                            Vote Now
+                                                        </Link>
                                                     </div>
                                                 </div>
                                             </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import Image from 'next/image';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -42,9 +43,8 @@ function PresidencialCandidates() {
     return (
         <main>
             <ToastContainer hideProgressBar={true} autoClose={2000} />
-            <div className='bg-gray-100 py-5 px-2 sm:px-5 xl:px-14 sm:py-7'>
-                <h1 className='text-2xl sm:text-3xl xl:text-5xl tracking-wide font-bold text-blue-950 antialiased text-center mukta-extrabold'>Candidates</h1>
-                <div className='bg-gray-50 w-full rounded-xl py-5 px-2 sm:px-5 mt-4 sm:mt-8 shadow-md border'>
+            <div className='bg-gray-100 pb-3 px-2 sm:px-5 xl:px-14'>
+                <div className='bg-gray-50 w-full rounded-xl py-5 px-2 sm:px-5 shadow-md border'>
                     <h1 className='text-xl sm:text-2xl xl:text-3xl tracking-wide font-extrabold text-black antialiased text-center w-full'> Presidents</h1>
                     <div className='flex justify-center items-stretch gap-3 flex-wrap flex-col sm:flex-row w-full mt-5'>
                         {loading &&
@@ -92,12 +92,12 @@ function PresidencialCandidates() {
                                                         <h1 className='text-base sm:text-lg font-semibold text-gray-700 mt-1 truncate block'>{candidate.candidateLevel}</h1>
                                                     </div>
                                                     <div className='w-full flex justify-between items-center gap-2 mt-3 xl:px-4'>
-                                                        <button className='w-3/6 py-2 bg-[#0E5D8A] text-white font-semibold rounded-lg tracking-wide text-sm sm:text-base'>
+                                                        <button className='w-3/6 py-2 bg-[#0E5D8A] text-white font-semibold rounded-2xl tracking-wide text-sm sm:text-base'>
                                                             View Profile
                                                         </button>
-                                                        <a href={`https://wa.me/${phoneNumber}?text=Hi, I'm interested in voting for you. Could you please provide more information about your manifesto?`} target="_blank" className='text-center py-2 mx-auto w-3/6 bg-gray-100 font-semibold border hover:bg-gray-300/90 text-slate-700 hover:text-slate-800 rounded-lg tracking-wide text-sm sm:text-base'>
-                                                            Message
-                                                        </a>
+                                                        <Link href="/activeEletions" className='text-center py-2 mx-auto w-3/6 bg-gray-100 font-semibold border hover:bg-gray-300/90 text-slate-700 hover:text-slate-800 rounded-2xl tracking-wide text-sm sm:text-base'>
+                                                            Vote Now
+                                                        </Link>
                                                     </div>
                                                 </div>
                                             </div>

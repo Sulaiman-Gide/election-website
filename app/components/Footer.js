@@ -8,7 +8,7 @@ function Footer() {
   return (
     <div>
       <div className='flex flex-row justify-between items-center pt-4 pb-3 px-3 sm:px-5 lg:px-14 font-serif select-none bg-[#0E5D8A]'>
-      <h1 className=' text-gray-50 lg:text-4xl text-2xl antialiased cursor-pointer hover:opacity-65'>CEOSA Decides</h1>
+      <h1 className=' text-gray-50 lg:text-4xl text-2xl antialiased cursor-pointer hover:opacity-65'>COESA Decides</h1>
         <div
          className='flex flex-row items-center'>
             <Link href="#" target='_blank' className=''>
@@ -22,7 +22,7 @@ function Footer() {
             </Link>
         </div>
       </div>
-      <p className='text-sm sm:text-base text-slate-800 py-3 bg-gray-100 text-center font-serif'> <span className="font-sans">Copyright &#169; 2024.</span>foodlify, All rights reserved. Powered by QI solutions and services</p>
+      <p className='text-sm sm:text-base text-slate-800 py-3 bg-gray-100 text-center'> <span className="font-sans">Copyright &#169; 2024</span> Votenow. All rights reserved, Powered by Group 13.</p>
     </div>
 
   )

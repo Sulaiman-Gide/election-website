@@ -1,6 +1,6 @@
 "use client"
 import { GoogleFonts } from 'next-google-fonts';
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import Link from 'next/link';
 import Navbar from "./components/Navbar";
@@ -11,8 +11,39 @@ import AssistantSecretaryGeneral from "./components/AssistantSecretaryGeneral";
 import Treasurer from "./components/Treasurer";
 import Footer from "./components/Footer";
 import { motion } from 'framer-motion';
+import { getDocs, collection, query } from 'firebase/firestore';
+import { auth, db, storage } from "./components/Firebase";
 
 export default function Home() {
+  const [candidateList, setCandidateList] = useState(false);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    const getItems = async () => {
+        try {
+            const q = query(collection(db, 'elections'));
+            const querySnapshot = await getDocs(q);
+
+            console.log("Query Snapshot:", querySnapshot);
+
+            let list = [];
+            querySnapshot.forEach((doc) => {
+                list.push({ id: doc.id, ...doc.data() });
+            });
+
+            setData(list);
+            setLoading(false);
+            setCandidateList(true);
+        } catch (err) {
+            toast.error(err.message);
+            setLoading(true);
+        }
+    };
+
+    getItems();
+}, []);
 
   return (
     <main>
@@ -41,11 +72,11 @@ export default function Home() {
               }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}className='w-full h-full flex flex-col justify-center items-center '>
-                <h1 className='text-4xl sm:text-6xl xl:text-8xl tracking-wide font-extrabold text-white/90 antialiased text-center mukta-extrabold mt-3'>CEOSA Decides</h1>
+                <h1 className='text-4xl sm:text-6xl xl:text-8xl tracking-wide font-extrabold text-white/90 antialiased text-center mukta-extrabold mt-3'>COESA Decides</h1>
                 <p className='font-thin text-gray-100 text-base sm:text-xl text-center mukta-extrabold tracking-wide my-2 sm:my-7'>3Hrs 42Mins 20Secs</p>
                 <p className='font-thin text-gray-100 text-base sm:text-xl text-center mukta-extrabold tracking-wide mb-3 sm:mb-7'>March 21 - 10am to 4pm</p>
                 <div className='flex justify-start items-center gap-3'>
-                  <Link href="#" className='bg-white/90  hover:bg-[#0E5D8A] hover:border text-gray-800 hover:text-gray-50 font-bold text-base sm:text-lg xl:text-xl tracking-wider py-1.5 sm:py-2 px-9 xl:px-12 rounded-3xl'>
+                  <Link href="/activeEletions" className='bg-white/90  hover:bg-[#0E5D8A] text-gray-800 hover:text-gray-50 font-bold text-base sm:text-lg xl:text-xl tracking-wider py-1.5 sm:py-2 px-9 xl:px-12 rounded-3xl'>
                     Vote Now
                   </Link>
                 </div>
@@ -53,11 +84,14 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <PresidencialCandidates />
-      <VicePresidencialCandidates />
-      <SecretaryGeneral />
-      <AssistantSecretaryGeneral />
-      <Treasurer />
+      <div className='bg-gray-100 pt-5 sm:pt-8'>
+        <h1 className='text-2xl sm:text-3xl xl:text-5xl tracking-wide font-bold text-blue-950 antialiased text-center mukta-extrabold mb-5 sm:mb-8'>Candidates</h1>
+        <PresidencialCandidates />
+        <VicePresidencialCandidates />
+        <SecretaryGeneral />
+        <AssistantSecretaryGeneral />
+        <Treasurer />
+      </div>
       <Footer />
     </main>
   )
