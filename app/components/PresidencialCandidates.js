@@ -7,11 +7,27 @@ import 'react-toastify/dist/ReactToastify.css';
 import Button from '@mui/material/Button';
 import { getDocs, collection, query } from 'firebase/firestore';
 import { auth, db, storage } from "./Firebase";
+import CandidatesModal from './CandidatesModal';
 
 function PresidencialCandidates() {
     const [candidateList, setCandidateList] = useState(false);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedCandidate, setSelectedCandidate] = useState(null);
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleCandidateSelect = (candidate) => {
+        setSelectedCandidate(candidate);
+        handleOpen();
+    };
+
+    const handleCloseModal = () => {
+        setSelectedCandidate(null);
+    };
 
     useEffect(() => {
         setLoading(true);
@@ -32,7 +48,6 @@ function PresidencialCandidates() {
                 setCandidateList(true);
             } catch (err) {
                 toast.error(err.message);
-                setLoading(true);
             }
         };
 
@@ -41,8 +56,7 @@ function PresidencialCandidates() {
 
 
     return (
-        <main>
-            <ToastContainer hideProgressBar={true} autoClose={2000} />
+        <main>      
             <div className='bg-gray-100 pb-3 px-2 sm:px-5 xl:px-14'>
                 <div className='bg-gray-50 w-full rounded-xl py-5 px-2 sm:px-5 shadow-md border'>
                     <h1 className='text-xl sm:text-2xl xl:text-3xl tracking-wide font-extrabold text-black antialiased text-center w-full'> Presidents</h1>
@@ -67,44 +81,42 @@ function PresidencialCandidates() {
                             ))}
                         {candidateList && (
                             data
-                                .filter(candidate => candidate.candidatePost === "President")
-                                .map((candidate, index) => {
-                                    let phoneNumber = candidate.candidatePhone.startsWith('0')
-                                        ? '+234' + candidate.candidatePhone.slice(1)
-                                        : candidate.candidatePhone;
-                                    return (
-                                        <div key={index} className='bg-white shadow-md border border-slate-100 flex flex-col items-start justify-center gap-2 w-full sm:w-[30.2%] py-4 rounded-lg'>
-                                            <div className='relative w-32 h-32 sm:h-40 sm:w-40 mx-auto rounded-full overflow-hidden'>
-                                                <Image
-                                                    fill={true}
-                                                    src={candidate.image1}
-                                                    alt={candidate.name}
-                                                    priority={true}
-                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                                    className='w-full card-img object-cover rounded-sm'
-                                                />
-                                            </div>
-                                            <div className='px-3 flex-grow flex flex-col justify-start w-full'>
-                                                <div className='mt-3'>
-                                                    <h1 className='font-semibold text-gray-800 text-lg sm:text-xl truncate block text-center'>{candidate.name}</h1>
-                                                    <div className='flex justify-center items-center flex-col px-1 mt-1'>
-                                                        <h1 className='text-lg sm:text-xl font-semibold mt-1 truncate block text-[#0E5D8A]'>{candidate.nickName}</h1>
-                                                        <h1 className='text-base sm:text-lg font-semibold text-gray-700 mt-1 truncate block'>{candidate.candidateLevel}</h1>
-                                                    </div>
-                                                    <div className='w-full flex justify-between items-center gap-2 mt-3 xl:px-4'>
-                                                        <button className='w-3/6 py-2 bg-[#0E5D8A] text-white font-semibold rounded-2xl tracking-wide text-sm sm:text-base'>
-                                                            View Profile
-                                                        </button>
-                                                        <Link href="/activeEletions" className='text-center py-2 mx-auto w-3/6 bg-gray-100 font-semibold border hover:bg-gray-300/90 text-slate-700 hover:text-slate-800 rounded-2xl tracking-wide text-sm sm:text-base'>
-                                                            Vote Now
-                                                        </Link>
-                                                    </div>
+                            .filter(candidate => candidate.candidatePost === "President")
+                            .map((candidate, index) => {
+                                return (
+                                    <div key={index} className='bg-white shadow-md border border-slate-100 flex flex-col items-start justify-center gap-2 w-full sm:w-[30.2%] py-4 rounded-lg'>
+                                        <div className='relative w-32 h-32 sm:h-40 sm:w-40 mx-auto rounded-full overflow-hidden'>
+                                            <Image
+                                                fill={true}
+                                                src={candidate.image1}
+                                                alt={candidate.name}
+                                                priority={true}
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                className='w-full card-img object-cover rounded-sm'
+                                            />
+                                        </div>
+                                        <div className='px-3 flex-grow flex flex-col justify-start w-full'>
+                                            <div className='mt-3'>
+                                                <h1 className='font-semibold text-gray-800 text-lg sm:text-xl truncate block text-center'>{candidate.name}</h1>
+                                                <div className='flex justify-center items-center flex-col px-1 mt-1'>
+                                                    <h1 className='text-lg sm:text-xl font-semibold mt-1 truncate block text-[#0E5D8A]'>{candidate.nickName}</h1>
+                                                    <h1 className='text-base sm:text-lg font-semibold text-gray-700 mt-1 truncate block'>{candidate.candidateLevel}</h1>
+                                                </div>
+                                                <div className='w-full flex justify-between items-center gap-2 mt-4 sm:px-3 xl:px-4'>
+                                                    <button onClick={() => handleCandidateSelect(candidate)} className='w-3/6 py-2 bg-[#0E5D8A] text-white font-semibold rounded-2xl tracking-wide text-sm sm:text-base'>
+                                                        View Profile
+                                                    </button>
+                                                    <Link href='voteNow' className='text-center py-2 mx-auto w-3/6 bg-gray-100 font-semibold border hover:bg-gray-300/90 text-slate-700 hover:text-slate-800 rounded-2xl tracking-wide text-sm sm:text-base'>
+                                                        Vote Now
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
-                                    );
-                                })
+                                    </div>
+                                );
+                            })
                         )}
+                        {selectedCandidate && <CandidatesModal candidate={selectedCandidate} open={open} handleClose={handleCloseModal}/>}
                     </div>
                 </div>
             </div>

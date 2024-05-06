@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from 'react';
 
 import { auth, db, storage } from "../components/Firebase";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar-3";
 import Admin from "../components/Admini";
 import Footer from '../components/Footer';
 import { onAuthStateChanged } from "firebase/auth";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { setDoc, doc, collection, getDoc, getDocs, query, where, onSnapshot  } from 'firebase/firestore';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 import {motion} from 'framer-motion';
 import { ToastContainer, toast } from 'react-toastify';
@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function page() {
   const [login, setLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [profile, setProfile] = useState(false);
@@ -57,6 +58,7 @@ function page() {
   }
   
   const handleLogin = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -68,6 +70,7 @@ function page() {
         toast.error("Invalid administrator login details.");
       }
     } catch (error) {
+      setLoading(false);
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log(errorCode);
@@ -92,6 +95,7 @@ function page() {
     toast.success("Sending OTP...", {
       icon: "⏳"
     });
+    setLoading(true);
 
     const appVerifier = window.recaptchaVerifier;
 
@@ -102,6 +106,7 @@ function page() {
           icon: "🚀"
         });
         setShowOTP(true);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error)
@@ -211,12 +216,15 @@ function page() {
                 </div>
 
                 <div>
-                    <button
+                  {!loading && <button
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
-                    >
-                      Sign in
-                    </button>
+                  >
+                    Sign in
+                  </button>}
+                  {loading && <button type="button" className="flex w-full justify-center rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600" disabled>
+                   <CircularProgress  className='text-white w-4 h-4' />
+                  </button>}
                 </div>
               </form>
             </div>

@@ -69,7 +69,7 @@ function Navbar() {
 
         <Link href="/admin" className="text-lg text-[#0E5D8A] hover:text-[#0E5D8A]/60 font-bold tracking-wider mx-2 ">Electoral Committee</Link>
 
-        <img src='/avatar.jpg' alt='' className='w-11 h-11 rounded-full border border-blue-950 ml-3' />
+        <Link href='/voteNow' ><img src='/avatar.jpg' alt='' className='w-11 h-11 rounded-full border border-blue-950 ml-3' /></Link>
       </div>
       <div className='lg:hidden'>
         {['top'].map((anchor) => (

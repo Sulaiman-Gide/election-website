@@ -6,11 +6,27 @@ import 'react-toastify/dist/ReactToastify.css';
 import Button from '@mui/material/Button';
 import { getDocs, collection, query } from 'firebase/firestore';
 import { auth, db, storage } from "./Firebase";
+import CandidatesModal from './CandidatesModal';
 
 function AssistantSecretaryGeneral() {
     const [candidateList, setCandidateList] = useState(false);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedCandidate, setSelectedCandidate] = useState(null);
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleCandidateSelect = (candidate) => {
+        setSelectedCandidate(candidate);
+        handleOpen();
+    };
+
+    const handleCloseModal = () => {
+        setSelectedCandidate(null);
+    };
 
     useEffect(() => {
         setLoading(true);
@@ -31,7 +47,6 @@ function AssistantSecretaryGeneral() {
                 setCandidateList(true);
             } catch (err) {
                 toast.error(err.message);
-                setLoading(true);
             }
         };
 
@@ -90,7 +105,7 @@ function AssistantSecretaryGeneral() {
                                                         <h1 className='text-base sm:text-lg font-semibold text-gray-700 mt-1 truncate block'>{candidate.candidateLevel}</h1>
                                                     </div>
                                                     <div className='w-full flex justify-between items-center gap-2 mt-3 xl:px-4'>
-                                                        <button className='w-3/6 py-2 bg-[#0E5D8A] text-white font-semibold rounded-2xl tracking-wide text-sm sm:text-base'>
+                                                        <button onClick={() => handleCandidateSelect(candidate)} className='w-3/6 py-2 bg-[#0E5D8A] text-white font-semibold rounded-2xl tracking-wide text-sm sm:text-base'>
                                                             View Profile
                                                         </button>
                                                         <Link href="/activeEletions" className='text-center py-2 mx-auto w-3/6 bg-gray-100 font-semibold border hover:bg-gray-300/90 text-slate-700 hover:text-slate-800 rounded-2xl tracking-wide text-sm sm:text-base'>
@@ -103,6 +118,7 @@ function AssistantSecretaryGeneral() {
                                     );
                                 })
                         )}
+                        {selectedCandidate && <CandidatesModal candidate={selectedCandidate} open={open} handleClose={handleCloseModal}/>}
                     </div>
                 </div>
             </div>

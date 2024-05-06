@@ -63,11 +63,11 @@ function Navbar() {
         <img src='/VOTE_LOGO.png' className='h-10 sm:h-12' />
       </Link>
       <div className='hidden lg:flex items-center'>
-        <Link href="/" className="text-lg text-[#0E5D8A] hover:text-[#0E5D8A]/60 font-bold tracking-wider mx-2  border-b-2 border-[#0E5D8A] hover:border-[#0E5D8A]/60">Ongoing Election</Link>
+        <Link href="/" className="text-lg text-[#0E5D8A] hover:text-[#0E5D8A]/60 font-bold tracking-wider mx-2">Ongoing Election</Link>
 
-        <Link href="/activeEletions" className="text-lg text-[#0E5D8A] hover:text-[#0E5D8A]/60 font-bold tracking-wider mx-2 ">Upcomming Election</Link>
+        <Link href="/activeEletions" className="text-lg text-[#0E5D8A] hover:text-[#0E5D8A]/60 font-bold tracking-wider mx-2">Upcomming Election</Link>
 
-        <Link href="/admin" className="text-lg text-[#0E5D8A] hover:text-[#0E5D8A]/60 font-bold tracking-wider mx-2 ">Electoral Committee</Link>
+        <Link href="/admin" className="text-lg text-[#0E5D8A] hover:text-[#0E5D8A]/60 font-bold tracking-wider mx-2 border-b-2 border-[#0E5D8A] hover:border-[#0E5D8A]/60">Electoral Committee</Link>
 
         <Link href='/voteNow' ><img src='/avatar.jpg' alt='' className='w-11 h-11 rounded-full border border-blue-950 ml-3' /></Link>
       </div>

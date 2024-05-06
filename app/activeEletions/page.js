@@ -37,8 +37,6 @@ function page() {
     fetchData();
   }, []);
 
-  console.log(electionsData)
-
   return (
     <div>
       <div className='relative flex flex-col justify-between'>
