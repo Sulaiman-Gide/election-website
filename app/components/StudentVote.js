@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, doc as firestoreDoc, getDoc } from 'firebase/firestore';
 import { db } from './Firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,11 +9,12 @@ function VotingPage() {
   const [electionData, setElectionData] = useState([]);
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
-      setLoading(true);
       try {
         const electionsSnapshot = await getDocs(collection(db, 'elections'));
         const electionsList = electionsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        console.log('Fetched elections:', electionsList);
         setElectionData(electionsList);
         setLoading(false);
       } catch (error) {
@@ -26,11 +27,32 @@ function VotingPage() {
     fetchData();
   }, []);
 
+  const getCandidateDetails = async candidateId => {
+    if (!candidateId) {
+      console.error('Invalid candidateId:', candidateId);
+      return null;
+    }
+  
+    const candidateDocRef = firestoreDoc(db, 'candidates', candidateId);
+    try {
+      const candidateDocSnapshot = await getDoc(candidateDocRef);
+      if (candidateDocSnapshot.exists()) {
+        return candidateDocSnapshot.data();
+      } else {
+        console.error('Candidate document not found');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching candidate details:', error);
+      return null;
+    }
+  };  
+
   useEffect(() => {
     const fetchCandidateDetails = async () => {
-      if (!loading && electionData.length > 0) {
-        const updatedElectionData = [];
-        for (const election of electionData) {
+      const updatedElectionData = [];
+      for (const election of electionData) {
+        if (election && election.candidates && Array.isArray(election.candidates)) {
           const updatedCandidates = [];
           for (const candidateId of election.candidates) {
             const candidateDetails = await getCandidateDetails(candidateId);
@@ -39,29 +61,17 @@ function VotingPage() {
             }
           }
           updatedElectionData.push({ ...election, candidates: updatedCandidates });
+        } else {
+          console.error('Invalid election or candidates data:', election);
         }
-        setElectionData(updatedElectionData);
       }
+      setElectionData(updatedElectionData);
     };
 
-    fetchCandidateDetails();
-  }, [electionData, loading]); // Only run this effect when electionData or loading changes
-
-  const getCandidateDetails = async (candidateId) => {
-    try {
-      const candidateDocRef = doc(db, 'candidates', candidateId);
-      const candidateDocSnapshot = await getDoc(candidateDocRef);
-      if (candidateDocSnapshot.exists()) {
-        return candidateDocSnapshot.data();
-      } else {
-        console.error('Candidate document not found for id:', candidateId);
-        return null;
-      }
-    } catch (error) {
-      console.error('Error fetching candidate details:', error);
-      return null;
+    if (!loading && Array.isArray(electionData)) {
+      fetchCandidateDetails();
     }
-  };
+  }, [electionData, loading]);
 
   return (
     <div className="container mx-auto p-4 min-h-screen">
@@ -86,15 +96,21 @@ function VotingPage() {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {election.candidates.map(candidate => (
-                        <tr key={candidate.id}>
-                          <td className="px-6 py-4 whitespace-nowrap">{candidate.name}</td>
-                          <td className="px-6 py-4 whitespace-nowrap">{candidate.party}</td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <button className="bg-blue-500 text-white py-2 px-4 rounded">Vote</button>
-                          </td>
+                      {election.candidates && Array.isArray(election.candidates) ? (
+                        election.candidates.map(candidate => (
+                          <tr key={candidate.id}>
+                            <td className="px-6 py-4 whitespace-nowrap">{candidate.name}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{candidate.candidatePost}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <button className="bg-blue-500 text-white py-2 px-4 rounded">Vote</button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="3">Invalid candidates data for this election.</td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
