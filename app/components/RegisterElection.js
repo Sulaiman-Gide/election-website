@@ -9,6 +9,7 @@ import { MdOutlineRemoveCircleOutline } from "react-icons/md";
 
 function RegisterElection({ userData }) {
   const [loading, setLoading] = useState(false);
+  const [loadingBtn, setLoadingBtn] = useState(false);
   const [selectedPost, setSelectedPost] = useState('');
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [candidatesList, setCandidatesList] = useState([]);
@@ -55,6 +56,7 @@ function RegisterElection({ userData }) {
   };
 
   const handleSubmit = async (e) => {
+    setLoadingBtn(true);
     e.preventDefault();
 
     if (!selectedPost || selectedCandidates.length === 0 || !startTime || !endTime) {
@@ -69,8 +71,10 @@ function RegisterElection({ userData }) {
         startTime,
         endTime,
       });
+      setLoadingBtn(false);
       toast.success('Election information added successfully.');
     } catch (error) {
+      setLoadingBtn(false);
       toast.error('Error adding election: ', error);
     }
   };
@@ -180,9 +184,9 @@ function RegisterElection({ userData }) {
         <button
           type="submit"
           className="bg-green-600 text-white py-2 px-4 font-semibold rounded"
-          disabled={loading}
+          disabled={loadingBtn}
         >
-          {loading ? 'Saving...' : 'Save Election'}
+          {loadingBtn ? 'Saving...' : 'Save Election'}
         </button>
       </div>
     </form>

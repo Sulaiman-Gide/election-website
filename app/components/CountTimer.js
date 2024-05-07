@@ -8,13 +8,16 @@ function CountTimer() {
     return Math.max(0, endOfDay - now);
   };
 
-  const [timer, setTimer] = useState(calculateTimeRemaining());
+  // Initialize timer state with 0 initially
+  const [timer, setTimer] = useState(0);
   const [countdownInterval, setCountdownInterval] = useState(null);
 
   useEffect(() => {
+    setTimer(calculateTimeRemaining());
+
     const startCountdown = () => {
       const interval = setInterval(() => {
-        setTimer((prevTimer) => Math.max(0, prevTimer - 1000)); // Subtract 1000 milliseconds (1 second)
+        setTimer((prevTimer) => Math.max(0, prevTimer - 1000));
       }, 1000);
 
       setCountdownInterval(interval);
@@ -27,7 +30,7 @@ function CountTimer() {
         clearInterval(countdownInterval);
       }
     };
-  }, []);
+  }, []); 
 
   const formatTime = (timeRemaining) => {
     const hours = Math.floor(timeRemaining / (60 * 60 * 1000));
@@ -50,4 +53,4 @@ function CountTimer() {
   )
 }
 
-export default CountTimer
+export default CountTimer;

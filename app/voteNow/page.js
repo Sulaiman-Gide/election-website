@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { IoMdClose } from "react-icons/io";
 import { auth, db, storage } from "../components/Firebase";
 import Navbar from "../components/Navbar";
+import StudentVote from "../components/StudentVote";
 import Footer from '../components/Footer';
 import { setDoc, doc, collection, getDoc, getDocs, query, where, onSnapshot  } from 'firebase/firestore';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
@@ -34,24 +35,6 @@ function page() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [electionsData, setElectionsData] = useState([]);
     const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-      setLoading(true);
-      const fetchData = async () => {
-        try {
-          const electionsSnapshot = await getDocs(collection(db, 'elections'));
-          const electionsList = electionsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          setElectionsData(electionsList);
-          setLoading(false);
-        } catch (error) {
-          console.error('Error fetching elections:', error);
-          setLoading(true);
-        }
-      };
-      fetchData();
-    }, []);
-
-    console.log(electionsData)
 
 
     const handleLogin = async (e) => {
@@ -378,37 +361,8 @@ function page() {
                     </motion.div>
                 </div>
 
-                <div className={`${account ? "h-screen border inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-auto sm:my-8 align-middle sm:max-w-4xl w-full sm:mx-40 select-none" : "hidden"}`}>
-                    <div className="flex h-full flex-1 flex-col justify-start px-2 sm:px-4 p-5 sm:p-10 lg:px-8">
-                        <div className="">
-                            <h2 className="text-lg font-semibold mb-5 sm:mb-10">Candidate Voting</h2>
-                            <table className="w-full border-collapse border border-gray-200">
-                                <thead>
-                                    <tr className="bg-gray-100">
-                                        <th className="py-2 px-4 border">Candidate Post</th>
-                                        <th className="py-2 px-4 border">Name</th>
-                                        <th className="py-2 px-4 border">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {electionsData.map(candidate => (
-                                        <tr key={candidate.id} className="hover:bg-gray-50">
-                                            <td className="py-2 px-4 border">Caandidate Post</td>
-                                            <td className="py-2 px-4 border">Candidate Name</td>
-                                            <td className="py-2 px-4 border">
-                                                <button
-                                                    className="bg-teal-600 text-white py-1 px-3 rounded-md hover:bg-teal-500"
-                                                    onClick={() => handleVote(candidate)}
-                                                >
-                                                    Vote
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div className={`${account ? "" : "hidden"}`}>
+                    <StudentVote/>
                 </div>
             </div>
             <Footer />

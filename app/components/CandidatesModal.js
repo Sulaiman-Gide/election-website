@@ -44,7 +44,7 @@ function CandidateModal({ candidate, open, handleClose }) {
                                 Candidate's Profile
                             </h3>
                         </div>
-                        <div className='flex flex-col items-start justify-center gap-2 w-full py-5 select-none'>
+                        <div className='flex flex-col items-start justify-center gap-2 w-full py-5'>
                             <div className='relative w-32 h-32 sm:h-40 sm:w-40 mx-auto rounded-full overflow-hidden'>
                                 <Image
                                     fill={true}
