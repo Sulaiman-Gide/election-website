@@ -58,7 +58,7 @@ function Navbar() {
     </Box>
   );
   return (
-    <nav className='bg-white py-4 px-4 sm:px-5 lg:px-10 absolute w-full flex justify-between items-end z-50'>
+    <nav className='bg-white py-4 px-4 sm:px-5 lg:px-10 absolute w-full flex justify-between items-end z-50 border-b-2'>
       <Link href="/">
         <img src='/VOTE_LOGO.png' className='h-10 sm:h-12' />
       </Link>

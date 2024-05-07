@@ -22,9 +22,9 @@ import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } f
 
 
 function page() {
-    const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState(true);
     const [register, setRegister] = useState(false);
-    const [account, setAccount] = useState(true);
+    const [account, setAccount] = useState(false);
     const [userData, setUserData] = useState(null);
 
     const [name, setName] = useState('');
@@ -110,6 +110,31 @@ function page() {
         }
         }
     };
+
+    useEffect(() => {
+        let userEmail = email || (userData && userData.email);
+      
+        if (!userEmail) {
+          
+          return;
+        }
+      
+        const userDocRef = doc(db, 'students', userEmail);
+      
+        const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+          if (docSnapshot.exists()) {
+            setUserData(docSnapshot.data());
+            localStorage.setItem('userData', JSON.stringify(docSnapshot.data()));
+          } else {
+            
+          }
+        }, (error) => {
+          
+        });
+      
+        return () => unsubscribe();
+      
+      }, [email, userData]); 
 
     const handleRegisterLinkClick = () => {
         setLogin(false);
@@ -362,7 +387,7 @@ function page() {
                 </div>
 
                 <div className={`${account ? "" : "hidden"}`}>
-                    <StudentVote/>
+                    <StudentVote userData={userData} />
                 </div>
             </div>
             <Footer />

@@ -4,9 +4,11 @@ import { db } from './Firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function VotingPage() {
+function VotingPage({ userData }) {
   const [loading, setLoading] = useState(true);
   const [electionData, setElectionData] = useState([]);
+
+  console.log(userData)
 
   useEffect(() => {
     setLoading(true);
@@ -75,44 +77,48 @@ function VotingPage() {
 
   return (
     <div className="container mx-auto p-4 min-h-screen">
-      <h1 className="text-3xl font-bold mb-5 mt-5 sm:mt-10">Vote for Candidates</h1>
+      {electionData.length > 0 && <h1 className="text-3xl font-bold mb-5 sm:mb-10 sm:mt-10 text-start">Vote for Candidates</h1>}
       {loading ? (
-        <p>Loading...</p>
+         <div className='w-full h-full flex justify-center items-center'>
+          <p className="text-2xl font-bold mb-5 sm:mb-10 sm:mt-10 text-start text-gray-600">Loading...</p>
+        </div>
       ) : (
         <div>
           {electionData.length === 0 ? (
-            <p>No elections data available.</p>
+            <div className='w-full h-full flex justify-center items-center'>
+              <p className="text-2xl font-bold mb-5 sm:mb-10 sm:mt-10 text-start text-gray-600">No elections data available.</p>
+            </div>
           ) : (
-            <div>
-              {electionData.map(election => (
+            <div className='sm:px-5 border py-3'>
+            {electionData.map(election => (
                 <div key={election.id} className="mb-6">
-                  <h2 className="text-2xl font-bold">{election.post}</h2>
-                  <table className="min-w-full divide-y divide-gray-200 mt-4">
+                    <h2 className="text-2xl font-bold">{election.post}</h2>
+                    <table className="min-w-full divide-y divide-gray-200 mt-4">
                     <thead className="bg-gray-50">
-                      <tr>
+                        <tr>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Party</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                      </tr>
+                        </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {election.candidates && Array.isArray(election.candidates) ? (
+                        {election.candidates && Array.isArray(election.candidates) ? (
                         election.candidates.map(candidate => (
-                          <tr key={candidate.id}>
-                            <td className="px-6 py-4 whitespace-nowrap">{candidate.name}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{candidate.candidatePost}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <button className="bg-blue-500 text-white py-2 px-4 rounded">Vote</button>
+                            <tr key={candidate.id}>
+                            <td className="px-6 py-3 text-start">{candidate.name}</td>
+                            <td className="px-6 py-3 text-start">{candidate.candidateDepartment}</td>
+                            <td className="px-6 py-3 whitespace-nowrap">
+                                <button className="bg-blue-500 text-white py-2 px-4 rounded">Vote</button>
                             </td>
-                          </tr>
+                            </tr>
                         ))
-                      ) : (
+                        ) : (
                         <tr>
-                          <td colSpan="3">Invalid candidates data for this election.</td>
+                            <td colSpan="3">Invalid candidates data for this election.</td>
                         </tr>
-                      )}
+                        )}
                     </tbody>
-                  </table>
+                    </table>
                 </div>
               ))}
             </div>
