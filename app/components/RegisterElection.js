@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { db } from './Firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,6 +11,8 @@ function RegisterElection({ userData }) {
   const [selectedPost, setSelectedPost] = useState('');
   const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [candidatesList, setCandidatesList] = useState([]);
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
 
   useEffect(() => {
     const fetchCandidates = async () => {
@@ -29,6 +31,7 @@ function RegisterElection({ userData }) {
         setCandidatesList(filteredCandidates);
         setLoading(false);
       } catch (error) {
+        console.log(error)
         toast.error('Error fetching candidates: ', error);
         setLoading(false);
       }
@@ -53,37 +56,30 @@ function RegisterElection({ userData }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!selectedPost || selectedCandidates.length === 0) {
-      toast.error('Please select a post and at least one candidate.');
+    if (!selectedPost || selectedCandidates.length === 0 || !startTime || !endTime) {
+      toast.error('Please select a post, at least one candidate, start time, and end time.');
       return;
     }
 
     try {
-      toast.success('Wait uploading election information...', {
-        icon: '⏳',
-      });
-      const now = new Date();
-      const startDateTime = now.toISOString();
-      const endDateTime = new Date(now.getTime() + 2 * 60 * 60 * 1000).toISOString(); // 2 hours after start
-
       const newElectionRef = await addDoc(collection(db, 'elections'), {
         post: selectedPost,
         candidates: selectedCandidates.map((candidate) => candidate.id),
-        startTime: startDateTime,
-        endTime: endDateTime,
+        startTime,
+        endTime,
       });
-      toast.success('Election information added...');
+      toast.success('Election information added successfully.');
     } catch (error) {
       toast.error('Error adding election: ', error);
     }
   };
 
+  const handleEndTimeChange = (e) => {
+    setEndTime(e.target.value);
+  };
+
   return (
     <form className='px-2 sm:px-7 pt-5 pb-28 h-auto sm:overflow-y-auto sm:h-[100vh] bg-white' onSubmit={handleSubmit}>
-      {/* Styled note about election start and end times */}
-      <div className="mb-7 text-xl text-[#0E5D8A] font-semibold">
-        Note: Elections start 24 hours after registering and end 2 hours after starting.
-      </div>
       {/* Form inputs for election details */}
       <div className="mt-4">
         <label htmlFor="selectedPost" className="block text-sm font-medium text-gray-700">Select Post:</label>
@@ -103,6 +99,34 @@ function RegisterElection({ userData }) {
           <option value="Financial Secretary" className='text-black'>Financial Secretary</option>
           <option value="Sport Director" className='text-black'>Sport Director</option>
         </select>
+      </div>
+
+      <div className='flex justify-between items-center gap-2 sm:mt-2'>
+        <div className='w-full sm:w-3/6 mt-4 sm:mt-7'>
+          <label htmlFor="startTime" className="block mb-2 text-sm font-medium text-gray-900">Select start time:</label>
+          <input
+            type="datetime-local"
+            id="startTime"
+            name="startTime"
+            className="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className='w-full sm:w-3/6 mt-4 sm:mt-7'>
+          <label htmlFor="endTime" className="block mb-2 text-sm font-medium text-gray-900">Select end time:</label>
+          <input
+            type="datetime-local"
+            id="endTime"
+            name="endTime"
+            className="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            value={endTime}
+            onChange={handleEndTimeChange}
+            required
+          />
+        </div>
       </div>
 
       <div className="mt-10">

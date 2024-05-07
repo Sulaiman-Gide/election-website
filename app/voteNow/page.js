@@ -380,8 +380,8 @@ function page() {
 
                 <div className={`${account ? "h-screen border inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-auto sm:my-8 align-middle sm:max-w-4xl w-full sm:mx-40 select-none" : "hidden"}`}>
                     <div className="flex h-full flex-1 flex-col justify-start px-2 sm:px-4 p-5 sm:p-10 lg:px-8">
-                        <div className="mt-3">
-                            <h2 className="text-lg font-semibold mb-5">Candidate Voting</h2>
+                        <div className="">
+                            <h2 className="text-lg font-semibold mb-5 sm:mb-10">Candidate Voting</h2>
                             <table className="w-full border-collapse border border-gray-200">
                                 <thead>
                                     <tr className="bg-gray-100">
@@ -393,8 +393,8 @@ function page() {
                                 <tbody>
                                     {electionsData.map(candidate => (
                                         <tr key={candidate.id} className="hover:bg-gray-50">
-                                            <td className="py-2 px-4 border">{candidate.candidatePost}</td>
-                                            <td className="py-2 px-4 border">{candidate.name}</td>
+                                            <td className="py-2 px-4 border">Caandidate Post</td>
+                                            <td className="py-2 px-4 border">Candidate Name</td>
                                             <td className="py-2 px-4 border">
                                                 <button
                                                     className="bg-teal-600 text-white py-1 px-3 rounded-md hover:bg-teal-500"
