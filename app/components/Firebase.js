@@ -5,13 +5,13 @@ import { getStorage } from "firebase/storage";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCcwR5Cnk7rvZwCP1vAz3LVpQII5UqkknQ",
-  authDomain: "election-5310e.firebaseapp.com",
-  projectId: "election-5310e",
-  storageBucket: "election-5310e.appspot.com",
-  messagingSenderId: "1097453696141",
-  appId: "1:1097453696141:web:a0f9b7bdfc6b7c3e759ec4",
-  measurementId: "G-29DMZH731Z"
+  apiKey: "AIzaSyDaHrWrEVVedbrfigYhzNTqZzJFk-_9C6o",
+  authDomain: "election-544c8.firebaseapp.com",
+  projectId: "election-544c8",
+  storageBucket: "election-544c8.appspot.com",
+  messagingSenderId: "173518600803",
+  appId: "1:173518600803:web:331058308a61686b329656",
+  measurementId: "G-P3WQNC5T7M"
 };
 
 // Initialize Firebase
