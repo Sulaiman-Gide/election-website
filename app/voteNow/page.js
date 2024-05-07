@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IoMdClose } from "react-icons/io";
 import { auth, db, storage } from "../components/Firebase";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar-4";
 import StudentVote from "../components/StudentVote";
 import Footer from '../components/Footer';
 import { setDoc, doc, collection, getDoc, getDocs, query, where, onSnapshot  } from 'firebase/firestore';
