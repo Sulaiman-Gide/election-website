@@ -65,7 +65,7 @@ function page() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}className='w-full h-full flex flex-col justify-center items-center '>
                 <h1 className='text-4xl sm:text-6xl xl:text-8xl tracking-wide font-extrabold text-white/90 antialiased text-center mukta-extrabold mt-3'>COESA Decides</h1>
-                <CountTimer />
+                <CountTimer /> 
                 <p className='font-thin text-gray-100 text-base sm:text-xl text-center mukta-extrabold tracking-wide mb-3 sm:mb-7'>May 10 - 10am to 4pm</p>
             </motion.div>
           </div>

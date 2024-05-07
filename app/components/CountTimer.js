@@ -44,9 +44,9 @@ function CountTimer() {
   };
 
   return (
-    <p className=' text-gray-100 text-lg sm:text-3xl font-bold text-center mukta-extrabold tracking-wide my-2 sm:my-7'>
-        <span>{formatTime(timer)}</span>
-    </p>
+    <div className=' text-gray-100 text-lg sm:text-3xl font-bold text-center mukta-extrabold tracking-wide my-2 sm:my-7'>
+      <span>{formatTime(timer)}</span>
+    </div>
   )
 }
 
