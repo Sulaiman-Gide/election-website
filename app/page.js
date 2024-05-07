@@ -19,6 +19,7 @@ import { getDocs, collection, query } from 'firebase/firestore';
 import { auth, db, storage } from "./components/Firebase";
 
 export default function Home() {
+  
   const [candidateList, setCandidateList] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
