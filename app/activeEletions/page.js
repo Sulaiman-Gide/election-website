@@ -9,13 +9,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { db } from "../components/Firebase";
 import Navbar from "../components/Navbar-2";
+import CountTimer from "../components/CountTimer";
 import Footer from "../components/Footer";
 import PresidencialCandidates from "../components/PresidencialCandidates";
 import VicePresidencialCandidates from "../components/VicePresidencialCandidates";
 import SecretaryGeneral from "../components/SecretaryGeneral";
 import AssistantSecretaryGeneral from "../components/AssistantSecretaryGeneral";
 import Treasurer from "../components/Treasurer";
-import Treasurer from "../components/SportDriector";
+import SportDirector from "../components/SportDriector";
 
 
 function page() {
@@ -64,8 +65,8 @@ function page() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}className='w-full h-full flex flex-col justify-center items-center '>
                 <h1 className='text-4xl sm:text-6xl xl:text-8xl tracking-wide font-extrabold text-white/90 antialiased text-center mukta-extrabold mt-3'>COESA Decides</h1>
-                <p className='font-thin text-gray-100 text-base sm:text-xl text-center mukta-extrabold tracking-wide my-2 sm:my-7'>3Hrs 42Mins 20Secs</p>
-                <p className='font-thin text-gray-100 text-base sm:text-xl text-center mukta-extrabold tracking-wide mb-3 sm:mb-7'>March 21 - 10am to 4pm</p>
+                <CountTimer />
+                <p className='font-thin text-gray-100 text-base sm:text-xl text-center mukta-extrabold tracking-wide mb-3 sm:mb-7'>May 10 - 10am to 4pm</p>
             </motion.div>
           </div>
         </div>
