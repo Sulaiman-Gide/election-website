@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc as firestoreDoc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, doc as firestoreDoc, updateDoc, addDoc } from 'firebase/firestore';
 import { db } from './Firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,8 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function VotingPage({ userData }) {
   const [loading, setLoading] = useState(true);
   const [electionData, setElectionData] = useState([]);
-
-  console.log(userData)
+  const [votedCandidates, setVotedCandidates] = useState([]);
 
   useEffect(() => {
     setLoading(true);
@@ -75,6 +74,25 @@ function VotingPage({ userData }) {
     }
   }, [electionData, loading]);
 
+  const handleVote = async (electionId, candidateId) => {
+    try {
+      // Add the vote to the electionResults collection
+      const result = await addDoc(collection(db, 'electionResults'), {
+        userId: userData.email,
+        candidateId: candidateId,
+        electionId: electionId,
+      });
+      toast.success('Vote added successfully');
+      
+      setVotedCandidates([...votedCandidates, `${electionId}-${candidateId}`]);
+      
+      
+    } catch (error) {
+      console.error('Error voting:', error);
+      toast.error('Error voting. Please try again later.');
+    }
+  };
+
   return (
     <div className="container mx-auto p-4 min-h-screen">
       {electionData.length > 0 && <h1 className="text-3xl font-bold mb-5 sm:mb-10 sm:mt-10 text-start">Vote for Candidates</h1>}
@@ -90,35 +108,41 @@ function VotingPage({ userData }) {
             </div>
           ) : (
             <div className='sm:px-5 border py-3'>
-            {electionData.map(election => (
+              {electionData.map(election => (
                 <div key={election.id} className="mb-6">
-                    <h2 className="text-2xl font-bold">{election.post}</h2>
-                    <table className="min-w-full divide-y divide-gray-200 mt-4">
+                  <h2 className="text-2xl font-bold">{election.post}</h2>
+                  <table className="min-w-full divide-y divide-gray-200 mt-4">
                     <thead className="bg-gray-50">
-                        <tr>
+                      <tr>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                        </tr>
+                      </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {election.candidates && Array.isArray(election.candidates) ? (
+                      {election.candidates && Array.isArray(election.candidates) ? (
                         election.candidates.map(candidate => (
-                            <tr key={candidate.id}>
+                          <tr key={candidate.id}>
                             <td className="px-6 py-3 text-start">{candidate.name}</td>
                             <td className="px-6 py-3 text-start">{candidate.candidateDepartment}</td>
                             <td className="px-6 py-3 whitespace-nowrap">
-                                <button className="bg-blue-500 text-white py-2 px-4 rounded">Vote</button>
+                              <button 
+                                onClick={() => handleVote(election.id, candidate.id)} 
+                                className={`bg-blue-500 text-white py-2 px-4 rounded ${votedCandidates.includes(`${election.id}-${candidate.id}`) ? 'bg-opacity-50 cursor-not-allowed' : ''}`}
+                                disabled={votedCandidates.includes(`${election.id}-${candidate.id}`)}
+                              >
+                                {votedCandidates.includes(`${election.id}-${candidate.id}`) ? 'Voted' : 'Vote'}
+                              </button>
                             </td>
-                            </tr>
+                          </tr>
                         ))
-                        ) : (
+                      ) : (
                         <tr>
-                            <td colSpan="3">Invalid candidates data for this election.</td>
+                          <td colSpan="3">Invalid candidates data for this election.</td>
                         </tr>
-                        )}
+                      )}
                     </tbody>
-                    </table>
+                  </table>
                 </div>
               ))}
             </div>

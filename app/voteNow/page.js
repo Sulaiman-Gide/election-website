@@ -17,7 +17,7 @@ import { auth, db, storage } from "../components/Firebase";
 import Navbar from "../components/Navbar-4";
 import StudentVote from "../components/StudentVote";
 import Footer from '../components/Footer';
-import { setDoc, doc, collection, getDoc, getDocs, query, where, onSnapshot  } from 'firebase/firestore';
+import { setDoc, doc, collection, addDoc, getDoc, getDocs, query, where, onSnapshot  } from 'firebase/firestore';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 
 
