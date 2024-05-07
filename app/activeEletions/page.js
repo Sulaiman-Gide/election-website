@@ -15,6 +15,7 @@ import VicePresidencialCandidates from "../components/VicePresidencialCandidates
 import SecretaryGeneral from "../components/SecretaryGeneral";
 import AssistantSecretaryGeneral from "../components/AssistantSecretaryGeneral";
 import Treasurer from "../components/Treasurer";
+import Treasurer from "../components/SportDriector";
 
 
 function page() {
@@ -98,6 +99,7 @@ function page() {
             {election.post === "Secretary General" && <SecretaryGeneral />}
             {election.post === "Assistant Secretary General" && <AssistantSecretaryGeneral />}
             {election.post === "Treasurer" && <Treasurer />}
+            {election.post === "Sport Director" && <SportDirector />}
           </div>
         ))}
       </div>

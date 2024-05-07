@@ -3,85 +3,25 @@ import { GoogleFonts } from 'next-google-fonts';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import Link from 'next/link';
+
 import Navbar from "./components/Navbar";
+import CountTimer from "./components/CountTimer";
 import PresidencialCandidates from "./components/PresidencialCandidates";
 import VicePresidencialCandidates from "./components/VicePresidencialCandidates";
 import SecretaryGeneral from "./components/SecretaryGeneral";
 import AssistantSecretaryGeneral from "./components/AssistantSecretaryGeneral";
+import SportDirector from "./components/SportDriector";
 import Treasurer from "./components/Treasurer";
 import Footer from "./components/Footer";
+
 import { motion } from 'framer-motion';
 import { getDocs, collection, query } from 'firebase/firestore';
 import { auth, db, storage } from "./components/Firebase";
 
-export default function Home({ initialTimer }) {
+export default function Home() {
   const [candidateList, setCandidateList] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [timer, setTimer] = useState(initialTimer);
-  const [countdownInterval, setCountdownInterval] = useState(null);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    const startCountdown = () => {
-      const interval = setInterval(() => {
-        setTimer((prevTimer) => {
-          const newTimer = Math.max(0, prevTimer - 1);
-          localStorage.setItem('flashSaleTimer', String(newTimer));
-          return newTimer;
-        });
-      }, 1000);
-
-      setCountdownInterval(interval);
-    };
-
-    const resetTimerAndShuffle = async () => {
-      resetTimer();
-      await shuffleProducts();
-    };
-
-    if (typeof window !== 'undefined') {
-      startCountdown();
-    }
-
-    return () => {
-      if (countdownInterval) {
-        clearInterval(countdownInterval);
-      }
-    };
-  }, [countdownInterval, timer]);
-
-  useEffect(() => {
-    if (timer === 0) {
-      resetTimerAndShuffle();
-    }
-  }, [timer]);
-
-  const calculateTimeRemaining = () => {
-    const now = new Date();
-    const endOfDay = new Date(now);
-    endOfDay.setHours(23, 59, 59, 999);
-    return Math.max(0, Math.floor((endOfDay - now) / 1000));
-  };
-
-  const formatTime = () => {
-    const timeRemaining = calculateTimeRemaining();
-    const hours = Math.floor(timeRemaining / 3600);
-    const minutes = Math.floor((timeRemaining % 3600) / 60);
-    const seconds = timeRemaining % 60;
-
-    return `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(
-      seconds
-    ).padStart(2, '0')}`;
-  };
-
-  const resetTimer = () => {
-    setTimer(calculateTimeRemaining());
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -137,10 +77,8 @@ export default function Home({ initialTimer }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}className='w-full h-full flex flex-col justify-center items-center '>
                 <h1 className='text-4xl sm:text-6xl xl:text-8xl tracking-wide font-extrabold text-white/90 antialiased text-center mukta-extrabold mt-3'>COESA Decides</h1>
-                <p className=' text-gray-100 text-lg sm:text-3xl font-bold text-center mukta-extrabold tracking-wide my-2 sm:my-7'>
-                  {isClient ? <span>{formatTime()}</span> : <span></span>}
-                </p>
-                <p className='font-thin text-gray-100 text-base sm:text-xl text-center mukta-extrabold tracking-wide mb-3 sm:mb-7'>March 21 - 10am to 4pm</p>
+                <CountTimer />
+                <p className='font-thin text-gray-100 text-base sm:text-xl text-center mukta-extrabold tracking-wide mb-3 sm:mb-7'>May 10 - 10am to 4pm</p>
                 <div className='flex justify-start items-center gap-3'>
                   <Link href="/activeEletions" className='bg-white/90  hover:bg-[#0E5D8A] text-gray-800 hover:text-gray-50 font-bold text-base sm:text-lg xl:text-xl tracking-wider py-1.5 sm:py-2 px-9 xl:px-12 rounded-3xl'>
                     Vote Now
@@ -157,6 +95,7 @@ export default function Home({ initialTimer }) {
         <SecretaryGeneral />
         <AssistantSecretaryGeneral />
         <Treasurer />
+        <SportDirector />
       </div>
       <Footer />
     </main>
