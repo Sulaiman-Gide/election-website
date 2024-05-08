@@ -76,6 +76,11 @@ function VotingPage({ userData }) {
 
   const handleVote = async (electionId, candidateId) => {
     try {
+      if (votedCandidates.includes(`${electionId}-${candidateId}`)) {
+        toast.error('You have already voted for this candidate.');
+        return;
+      }
+  
       // Add the vote to the electionResults collection
       const result = await addDoc(collection(db, 'electionResults'), {
         userId: userData.email,
@@ -83,14 +88,15 @@ function VotingPage({ userData }) {
         electionId: electionId,
       });
       toast.success('Vote added successfully');
-      
+  
       setVotedCandidates([...votedCandidates, `${electionId}-${candidateId}`]);
-      
+  
     } catch (error) {
       console.error('Error voting:', error);
       toast.error('Error voting. Please try again later.');
     }
   };
+  
 
   return (
     <div className="container mx-auto p-4 min-h-screen">

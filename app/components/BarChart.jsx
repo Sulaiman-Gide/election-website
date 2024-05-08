@@ -75,7 +75,7 @@ const BarChart = () => {
   }, []);
 
   return (
-    <div className='w-full md:col-span-3 relative lg:h-[71vh] h-[50vh] m-auto p-4 border bg-white dark:bg-gray-900 dark:border-gray-700 rounded-md'>
+    <div className='w-full md:col-span-3 relative lg:h-[71vh] h-[50vh] m-auto p-4 border bg-white dark:bg-gray-900 dark:border-gray-700 rounded-md mt-5'>
       <Bar data={chartData} options={chartOptions} />
     </div>
   );
