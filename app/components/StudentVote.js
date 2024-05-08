@@ -51,7 +51,7 @@ function VotingPage({ userData }) {
     };
 
     fetchCandidateDetails();
-  }, [loading, electionData]); // Added dependencies
+  }, [loading, electionData]);
 
   const getCandidateDetails = async candidateId => {
     if (!candidateId) {
@@ -76,12 +76,6 @@ function VotingPage({ userData }) {
 
   const handleVote = async (electionId, candidateId) => {
     try {
-      // Check if user already voted for this election
-      if (votedCandidates.some(vote => vote.electionId === electionId)) {
-        toast.warning('You have already voted for this post.');
-        return;
-      }
-      
       // Add the vote to the electionResults collection
       const result = await addDoc(collection(db, 'electionResults'), {
         userId: userData.email,
@@ -90,8 +84,8 @@ function VotingPage({ userData }) {
       });
       toast.success('Vote added successfully');
       
-      // Add the voted candidate to the votedCandidates state
-      setVotedCandidates([...votedCandidates, { electionId, candidateId }]);
+      setVotedCandidates([...votedCandidates, `${electionId}-${candidateId}`]);
+      
     } catch (error) {
       console.error('Error voting:', error);
       toast.error('Error voting. Please try again later.');
@@ -133,10 +127,10 @@ function VotingPage({ userData }) {
                             <td className="px-6 py-3 whitespace-nowrap">
                               <button 
                                 onClick={() => handleVote(election.id, candidate.id)} 
-                                className={`bg-blue-500 text-white py-2 px-4 rounded ${votedCandidates.some(vote => vote.electionId === election.id) ? 'bg-opacity-50 cursor-not-allowed' : ''}`}
-                                disabled={votedCandidates.some(vote => vote.electionId === election.id)}
+                                className={`bg-blue-500 text-white py-2 px-4 rounded ${votedCandidates.includes(`${election.id}-${candidate.id}`) ? 'bg-opacity-50 cursor-not-allowed' : ''}`}
+                                disabled={votedCandidates.includes(`${election.id}-${candidate.id}`)}
                               >
-                                {votedCandidates.some(vote => vote.electionId === election.id) ? 'Voted' : 'Vote'}
+                                {votedCandidates.includes(`${election.id}-${candidate.id}`) ? 'Voted' : 'Vote'}
                               </button>
                             </td>
                           </tr>
