@@ -152,8 +152,8 @@ function page() {
 
     return (
         <div >
+            <ToastContainer hideProgressBar={true} />
             <Navbar />
-            <ToastContainer hideProgressBar={true} autoClose={4000}/>
             <div className='flex items-end justify-center pt-20 px-2 pb-10 text-center sm:block sm:py-20'>
                 <div className={`${login ? "border inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-auto sm:my-8 align-middle sm:max-w-4xl w-full sm:mx-40 select-none" : "hidden"}`}>
                     <div className="flex h-full flex-1 flex-col justify-center px-2 sm:px-4 p-5 sm:p-12 lg:px-8">

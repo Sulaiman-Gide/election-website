@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, doc as firestoreDoc, updateDoc, addDoc } from 'firebase/firestore';
+import { collection, getDocs, doc as firestoreDoc, getDoc, updateDoc, addDoc } from 'firebase/firestore'; // Added 'getDoc'
 import { db } from './Firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -28,6 +28,31 @@ function VotingPage({ userData }) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchCandidateDetails = async () => {
+      if (!loading && Array.isArray(electionData) && electionData.length > 0) {
+        const updatedElectionData = [];
+        for (const election of electionData) {
+          if (election && election.candidates && Array.isArray(election.candidates)) {
+            const updatedCandidates = [];
+            for (const candidateId of election.candidates) {
+              const candidateDetails = await getCandidateDetails(candidateId);
+              if (candidateDetails) {
+                updatedCandidates.push({ ...candidateDetails, id: candidateId });
+              }
+            }
+            updatedElectionData.push({ ...election, candidates: updatedCandidates });
+          } else {
+            console.error('Invalid election or candidates data:', election);
+          }
+        }
+        setElectionData(updatedElectionData);
+      }
+    };
+
+    fetchCandidateDetails();
+  }, [loading, electionData]); // Added dependencies
+
   const getCandidateDetails = async candidateId => {
     if (!candidateId) {
       console.error('Invalid candidateId:', candidateId);
@@ -49,33 +74,14 @@ function VotingPage({ userData }) {
     }
   };  
 
-  useEffect(() => {
-    const fetchCandidateDetails = async () => {
-      const updatedElectionData = [];
-      for (const election of electionData) {
-        if (election && election.candidates && Array.isArray(election.candidates)) {
-          const updatedCandidates = [];
-          for (const candidateId of election.candidates) {
-            const candidateDetails = await getCandidateDetails(candidateId);
-            if (candidateDetails) {
-              updatedCandidates.push({ ...candidateDetails, id: candidateId });
-            }
-          }
-          updatedElectionData.push({ ...election, candidates: updatedCandidates });
-        } else {
-          console.error('Invalid election or candidates data:', election);
-        }
-      }
-      setElectionData(updatedElectionData);
-    };
-
-    if (!loading && Array.isArray(electionData)) {
-      fetchCandidateDetails();
-    }
-  }, [electionData, loading]);
-
   const handleVote = async (electionId, candidateId) => {
     try {
+      // Check if user already voted for this election
+      if (votedCandidates.some(vote => vote.electionId === electionId)) {
+        toast.warning('You have already voted for this post.');
+        return;
+      }
+      
       // Add the vote to the electionResults collection
       const result = await addDoc(collection(db, 'electionResults'), {
         userId: userData.email,
@@ -84,9 +90,8 @@ function VotingPage({ userData }) {
       });
       toast.success('Vote added successfully');
       
-      setVotedCandidates([...votedCandidates, `${electionId}-${candidateId}`]);
-      
-      
+      // Add the voted candidate to the votedCandidates state
+      setVotedCandidates([...votedCandidates, { electionId, candidateId }]);
     } catch (error) {
       console.error('Error voting:', error);
       toast.error('Error voting. Please try again later.');
@@ -128,10 +133,10 @@ function VotingPage({ userData }) {
                             <td className="px-6 py-3 whitespace-nowrap">
                               <button 
                                 onClick={() => handleVote(election.id, candidate.id)} 
-                                className={`bg-blue-500 text-white py-2 px-4 rounded ${votedCandidates.includes(`${election.id}-${candidate.id}`) ? 'bg-opacity-50 cursor-not-allowed' : ''}`}
-                                disabled={votedCandidates.includes(`${election.id}-${candidate.id}`)}
+                                className={`bg-blue-500 text-white py-2 px-4 rounded ${votedCandidates.some(vote => vote.electionId === election.id) ? 'bg-opacity-50 cursor-not-allowed' : ''}`}
+                                disabled={votedCandidates.some(vote => vote.electionId === election.id)}
                               >
-                                {votedCandidates.includes(`${election.id}-${candidate.id}`) ? 'Voted' : 'Vote'}
+                                {votedCandidates.some(vote => vote.electionId === election.id) ? 'Voted' : 'Vote'}
                               </button>
                             </td>
                           </tr>

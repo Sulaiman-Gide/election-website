@@ -109,7 +109,7 @@ function VicePresidencialCandidates() {
                                                         <button onClick={() => handleCandidateSelect(candidate)} className='w-3/6 py-2 bg-[#0E5D8A] text-white font-semibold rounded-2xl tracking-wide text-sm sm:text-base'>
                                                             View Profile
                                                         </button>
-                                                        <Link href="/activeEletions" className='text-center py-2 mx-auto w-3/6 bg-gray-100 font-semibold border hover:bg-gray-300/90 text-slate-700 hover:text-slate-800 rounded-2xl tracking-wide text-sm sm:text-base'>
+                                                        <Link href='voteNow' className='text-center py-2 mx-auto w-3/6 bg-gray-100 font-semibold border hover:bg-gray-300/90 text-slate-700 hover:text-slate-800 rounded-2xl tracking-wide text-sm sm:text-base'>
                                                             Vote Now
                                                         </Link>
                                                     </div>
