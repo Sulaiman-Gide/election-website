@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import { getDocs, collection, query } from 'firebase/firestore';
 import { auth, db, storage } from "./Firebase";
 import CandidatesModal from './CandidatesModal';
+import Link from 'next/link';
 
 function AssistantSecretaryGeneral() {
     const [candidateList, setCandidateList] = useState(false);
