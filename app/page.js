@@ -59,10 +59,11 @@ export default function Home() {
         <div className="blueOverlay"></div>
         <div className="homeTopImage select-none">
           <Image 
-            src="/COESA.png"
+            src="/pexels-edmond-dantes-7103122.jpg"
             alt="Image"
             layout="fill"
             priority={true}
+            className='object-cover'
           />
         </div>
         <div className="homeTopText px-5 sm:px-12 xl:px-20 select-none" >
